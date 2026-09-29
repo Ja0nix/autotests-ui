@@ -1,6 +1,9 @@
+import pytest
 from playwright.sync_api import sync_playwright, expect
 
 
+@pytest.mark.courses
+@pytest.mark.regression
 def test_empty_courses_list():
     with sync_playwright() as playwright:
         # Блок подготовки - сохраняем состояние браузера (куки и localStorage) в файл для дальнейшего использования
