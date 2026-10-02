@@ -1,10 +1,29 @@
 import pytest  # Импортируем библиотеку pytest
-from playwright.sync_api import sync_playwright, expect
+from playwright.sync_api import sync_playwright, expect, Page
 
 
 @pytest.mark.regression  # Добавили маркировку regression
 @pytest.mark.registration  # Добавили маркировку registration
-def test_successful_registration():  # Создаем тестовую функцию
+def test_successful_registration(chromium_page: Page): # Теперь используем фикстуру
+    chromium_page.goto("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration")
+
+    chromium_page.goto('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration')
+
+    email_input = chromium_page.get_by_test_id('registration-form-email-input').locator('input')
+    email_input.fill('user@gmail.com')
+
+    username_input = chromium_page.get_by_test_id('registration-form-username-input').locator('input')
+    username_input.fill('username')
+
+    password_input = chromium_page.get_by_test_id('registration-form-password-input').locator('input')
+    password_input.fill('password')
+
+    registration_button = chromium_page.get_by_test_id('registration-page-registration-button')
+    registration_button.click()
+
+
+@pytest.mark.registration  # Добавили маркировку registration
+def test_successful_registration_with_storage_save():  # Создаем тестовую функцию
     # Все остальные действия остаются без изменений
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=False)
